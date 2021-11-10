@@ -52,11 +52,11 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get('/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(_, res) {
-    res.redirect('/success');
-  });
+//   app.get('/google/callback', 
+// //   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function(_, res) {
+//     res.redirect('/success');
+//   });
 };
 
 main().catch((err) => {
