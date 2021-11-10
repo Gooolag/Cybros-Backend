@@ -1,13 +1,13 @@
 import passport  from "passport";
 import { Strategy } from "passport-google-oauth2";
 
-// passport.serializeUser(function(user, done) {
-//     done(null, user);
-// });
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
 
-// passport.deserializeUser(function(user, done) {
-//         done(null, user);
-// });
+passport.deserializeUser(function(user:any, done) {
+        done(null, user);
+});
 
 var GoogleStrategy=Strategy;
 passport.use(new GoogleStrategy({
@@ -17,6 +17,7 @@ passport.use(new GoogleStrategy({
     passReqToCallback   : true
 },
 function(request:any, accessToken:any, refreshToken:any, profile:any, done:any) {
+    console.log(accessToken);
     console.log("hje");
   }
 ))
