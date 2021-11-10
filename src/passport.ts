@@ -16,7 +16,7 @@ passport.use(
       clientID:
         "527085962224-ll9s87m90fon1jl6c4ef6dadp52pcc7m.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "https://cybros-backend.herokuapp.com",
+      callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
       passReqToCallback: true,
     },
     function (

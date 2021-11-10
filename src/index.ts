@@ -52,7 +52,7 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get('/auth/google/callback', 
+  app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(_, res) {
     res.redirect('/success');
