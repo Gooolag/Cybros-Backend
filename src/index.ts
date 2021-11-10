@@ -41,7 +41,10 @@ const main = async () => {
     "/google",
     passport.authenticate("google", {
       scope: ["email", "profile"],
-    })
+    }),(_, res) => {
+    console.log("works ?");
+    res.redirect("/success");
+  }
   );
 
   app.get("/failed", (_, res) => {
@@ -52,10 +55,10 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get("/", passport.authenticate("google"), (_, res) => {
-    console.log("works ?");
-    res.redirect("/success");
-  });
+//   app.get("/", passport.authenticate("google"), (_, res) => {
+//     console.log("works ?");
+//     res.redirect("/success");
+//   });
 };
 
 main().catch((err) => {
