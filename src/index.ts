@@ -54,13 +54,14 @@ const main = async () => {
 
   app.get(
     "/",
-    passport.authenticate("google", {
-      failureRedirect: "/failed",
-    }),
-    (_, res) => {
-      console.log("works ?");
-      res.redirect("/success");
-    }
+    () => console.log("works")
+    // passport.authenticate("google", {
+    //   failureRedirect: "/failed",
+    // }),
+    // (_, res) => {
+    //   console.log("works ?");
+    //   res.redirect("/success");
+    // }
   );
 };
 
