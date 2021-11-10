@@ -1,56 +1,66 @@
-import { createConnection } from "typeorm"
-import express from 'express'
-import ormConfig from "./orm.config"
-import { ApolloServer } from "apollo-server-express"
-import { buildSchema } from "type-graphql"
-import { UserResolver } from "./resolvers/user"
-import session from "express-session"
-// import passport from "passport"
-const passport = require('passport');
-require('./passport');
+import { createConnection } from "typeorm";
+import express from "express";
+import ormConfig from "./orm.config";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { UserResolver } from "./resolvers/user";
+import session from "express-session";
+import { defaults } from "pg";
+import passport from "passport"
+require("./passport");
+
 const main = async () => {
-    const conn = await createConnection(ormConfig)
-    conn.runMigrations()
-    const app = express()
-    const apolloServer = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [UserResolver],
-            validate: false,
-        })
-    })
-    await apolloServer.start()
-    apolloServer.applyMiddleware({ app })
-    app.listen(3000, () => {
-        console.log("server is running on port 4000")
-    })
-    app.use(session({secret:"lol",resave: false,
-      saveUninitialized: false,}))
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.get('/google',
-    passport.authenticate('google', {
-            scope:
-                ['email', 'profile']
-        }
-    ));
+  defaults.ssl = {
+    rejectUnauthorized: false,
+  };
+  const conn = await createConnection(ormConfig);
+  conn.runMigrations();
 
-    app.get("/failed", (req, res) => {
-    res.send("Failed")
-})
-app.get("/success", (req, res) => {
-    res.send(`Welcome ${req.user.email}`)
-})
+  const app = express();
 
-
-    app.get('/auth/google/callback',
-    passport.authenticate('google', {
-        failureRedirect: '/failed',
-        
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+      validate: false,
     }),
-    function (req, res) {
-        console.log("works ?")
-        res.redirect('https://google.com')
+    introspection: true,
+  });
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
 
+  app.listen(process.env.PORT || 4000, () => {
+    console.log("yep");
+  });
+
+  app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.get(
+    "/google",
+    passport.authenticate("google", {
+      scope: ["email", "profile"],
     })
-}
-main()
+  );
+
+  app.get("/failed", (_, res) => {
+    res.send("Failed");
+  });
+
+  app.get("/success", (_, res) => {
+    res.send("succeded");
+  });
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+      failureRedirect: "/failed",
+    }),
+    (_, res) => {
+      console.log("works ?");
+      res.redirect("https://google.com");
+    }
+  );
+};
+main();

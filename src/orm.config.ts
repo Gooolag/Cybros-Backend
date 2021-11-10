@@ -1,12 +1,16 @@
 import { createConnection } from "typeorm";
+import { __prod__ } from "./constants";
 import { User } from "./entities/User";
 
-export default{
-        type: "postgres",
-        database: "cybros backend",
-        synchronize: true,
-        logging: true,
-        username: "postgres",
-        password: "Shivral31",
-        entities: [User]
-    }as Parameters<typeof createConnection>[0];
+export default {
+  extities: [User],
+  type: "postgres",
+  database: "potatoDB",
+  url: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  logging: !__prod__,
+  debug: !__prod__,
+  synchronize: true,
+} as Parameters<typeof createConnection>[0];
