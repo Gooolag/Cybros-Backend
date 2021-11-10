@@ -53,7 +53,7 @@ const main = async () => {
   });
 
   app.post(
-    "/",
+    "",
     // (_, res) => {
     //   console.log("works");
     //   res.send("works");
