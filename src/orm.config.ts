@@ -7,6 +7,6 @@ export default{
         synchronize: true,
         logging: true,
         username: "postgres",
-        password: "252805",
+        password: "Shivral31",
         entities: [User]
     }as Parameters<typeof createConnection>[0];
