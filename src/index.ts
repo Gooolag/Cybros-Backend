@@ -53,13 +53,13 @@ const main = async () => {
   });
 
   app.get(
-    "/auth/google/callback",
+    "/",
     passport.authenticate("google", {
       failureRedirect: "/failed",
     }),
     (_, res) => {
       console.log("works ?");
-      res.redirect("/auth/google/callback");
+      res.redirect("/success");
     }
   );
 };
