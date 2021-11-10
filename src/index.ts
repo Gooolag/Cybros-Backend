@@ -49,7 +49,7 @@ app.get("/success", (req, res) => {
     }),
     function (req, res) {
         console.log("works ?")
-        // res.redirect('/success')
+        res.redirect('https://google.com')
 
     })
 }
