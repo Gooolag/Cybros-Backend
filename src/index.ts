@@ -1,5 +1,5 @@
 import { createConnection } from "typeorm";
-import express from "express";
+import express, { Router } from "express";
 import ormConfig from "./orm.config";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -8,7 +8,7 @@ import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
 require("./passport");
-
+const router=Router();
 const main = async () => {
   defaults.ssl = {
     rejectUnauthorized: false,
@@ -37,7 +37,7 @@ const main = async () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.get(
+  router.get(
     "/google",
     passport.authenticate("google", {
       scope: ["email", "profile"],
@@ -52,10 +52,12 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get("/", passport.authenticate("google"), (_, res) => {
+  router.get("/", passport.authenticate("google"), (_, res) => {
     console.log("works ?");
     res.redirect("/success");
   });
+  app.use('/auth', router);
+
 };
 
 main().catch((err) => {
