@@ -52,7 +52,7 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.post(
+  app.get(
     "/",
     // (_, res) => {
     //   console.log("works");
