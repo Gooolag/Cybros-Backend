@@ -52,20 +52,20 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get(
+  app.post(
     "/",
-    (_, res) => {
-      console.log("works");
-      res.send("works");
-    }
-
-    // passport.authenticate("google", {
-    //   failureRedirect: "/failed",
-    // }),
     // (_, res) => {
-    //   console.log("works ?");
-    //   res.redirect("/success");
+    //   console.log("works");
+    //   res.send("works");
     // }
+
+    passport.authenticate("google", {
+      failureRedirect: "/failed",
+    }),
+    (_, res) => {
+      console.log("works ?");
+      res.redirect("/success");
+    }
   );
 };
 
