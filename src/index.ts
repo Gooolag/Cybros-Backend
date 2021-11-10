@@ -54,7 +54,11 @@ const main = async () => {
 
   app.get(
     "/",
-    () => console.log("works")
+    (_, res) => {
+      console.log("works");
+      res.send("works");
+    }
+
     // passport.authenticate("google", {
     //   failureRedirect: "/failed",
     // }),
