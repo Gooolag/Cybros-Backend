@@ -59,9 +59,10 @@ const main = async () => {
     //   res.send("works");
     // }
 
-    passport.authenticate("google", {
-      failureRedirect: "/failed",
-    }),
+    () =>
+      passport.authenticate("google", {
+        failureRedirect: "/failed",
+      }),
     (_, res) => {
       console.log("works ?");
       res.redirect("/success");
