@@ -62,6 +62,7 @@ const main = async () => {
     () =>
       passport.authenticate("google", {
         failureRedirect: "/failed",
+        successFlash: "Success",
       }),
     (_, res) => {
       console.log("works ?");
