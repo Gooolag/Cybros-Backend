@@ -59,7 +59,7 @@ const main = async () => {
     }),
     (_, res) => {
       console.log("works ?");
-      res.redirect("https://google.com");
+      res.redirect("/auth/google/callback");
     }
   );
 };
