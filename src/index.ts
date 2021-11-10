@@ -51,12 +51,12 @@ const main = async () => {
   app.get("/success", (_, res) => {
     res.send("succeded");
   });
-
+  
   router.get("/", passport.authenticate("google"), (_, res) => {
     console.log("works ?");
     res.redirect("/success");
   });
-  app.use('/auth', router);
+  app.use('/google', router);
 
 };
 
