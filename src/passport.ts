@@ -18,6 +18,7 @@ passport.use(new GoogleStrategy({
 },
 function(request:any, accessToken:any, refreshToken:any, profile:any, done:any) {
     console.log("hje");
+    console.log(accessToken);
     request;accessToken;refreshToken;profile;done;
   }
 ))
