@@ -40,7 +40,7 @@ const main = async () => {
   router.get(
     "/google",
     passport.authenticate("google", {
-      scope: ["email", "profile"],
+      scope: ["profile"],
     })
   );
 
