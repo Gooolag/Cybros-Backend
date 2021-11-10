@@ -55,7 +55,7 @@ const main = async () => {
   app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(_, res) {
-    res.redirect('/');
+    res.redirect('/success');
   });
 };
 
