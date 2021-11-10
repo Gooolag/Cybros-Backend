@@ -6,7 +6,7 @@ import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
-import passport from "passport"
+import passport from "passport";
 require("./passport");
 
 const main = async () => {
@@ -63,4 +63,7 @@ const main = async () => {
     }
   );
 };
-main();
+
+main().catch((err) => {
+  console.log(err);
+});
