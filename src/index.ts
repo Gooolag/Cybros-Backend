@@ -17,7 +17,7 @@ function generateAccessToken(userId:string) {
   const expiresIn = '1 hour';
   // Which service issued the token
   const secret = "jesus";
-
+  console.log(userId);
   const token = jwt.sign({}, secret, {
     expiresIn: expiresIn,
     subject: "sjkhsjk"
