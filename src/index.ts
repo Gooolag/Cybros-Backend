@@ -8,8 +8,6 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
-import { MyContext } from "./types";
-import cors from "cors";
 require("./passport");
 const cookieSession = require('cookie-session');
 
@@ -46,7 +44,6 @@ const isLoggedIn = (req:any, res:any, next:any) => {
       resolvers: [UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ req, res }),
     introspection: true,
   });
   await apolloServer.start();
@@ -85,7 +82,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
 
   app.get("/me", isLoggedIn, (req,res) => {
     if (req.user)
-      res.send(req.user.id);
+      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
     else
       res.send("pp");
   })
