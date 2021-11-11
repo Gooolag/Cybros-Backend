@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "apollo-server-express": "^3.4.0",
+    "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
