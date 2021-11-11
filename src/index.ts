@@ -26,7 +26,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
     if (req.user) {
         return req
     } else {
-        res.sendStatus(401);
+        res.send("not logged in ");
     }
 }
 
