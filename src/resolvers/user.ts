@@ -20,6 +20,7 @@ export class UserResolver {
       if (!req.user) {
         return undefined;
       }
+      console.log(req.user.id);
       return User.findOne({ id: req.user.id });
     }
 
