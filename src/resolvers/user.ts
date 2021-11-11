@@ -23,7 +23,7 @@ export class UserResolver {
         return undefined;
       }
       console.log(req.session);
-    //   return User.findOne({ id: req.user.id });
+      return User.findOne({ id: "re" });
     }
 
 }
