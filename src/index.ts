@@ -8,7 +8,7 @@ import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
 require("./passport");
-
+const cookieSession = require('cookie-session');
 const main = async () => {
   defaults.ssl = {
     rejectUnauthorized: false,
@@ -17,6 +17,19 @@ const main = async () => {
   conn.runMigrations();
 
   const app = express();
+  app.use(cookieSession({
+  name: 'google-auth-session',
+  keys: ['key1', 'key2']
+}))
+
+const isLoggedIn = (req:any, res:any, next:any) => {
+    if (req.user) {
+        next();
+    } else {
+        res.sendStatus(401);
+    }
+}
+
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -58,6 +71,10 @@ const main = async () => {
       console.log("req==>",req);
     res.redirect('/success');
   });
+
+app.get("/me",isLoggedIn, (req, res) => {
+    res.send(`Welcome ${req}`)
+})
 };
 
 main().catch((err) => {
