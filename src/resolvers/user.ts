@@ -11,8 +11,8 @@ export class UserResolver {
 
     @Query(()=>[User])
     async getAllUsers():Promise<User []>{
-        return User.find();
-        
+      console.log(User.find());
+      return User.find();
     }
     
     @Query(() => User, { nullable: true })
