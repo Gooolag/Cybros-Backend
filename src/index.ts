@@ -7,7 +7,6 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
-import { nextTick } from "process";
 require("./passport");
 const cookieSession = require('cookie-session');
 const main = async () => {
