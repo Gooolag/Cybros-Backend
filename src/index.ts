@@ -11,7 +11,6 @@ import { MyContext } from "./types";
 import cors from "cors";
 require("./passport");
 const jwt = require('jsonwebtoken');
-const config = require('./config');
 const cookieSession = require("cookie-session");
 function generateAccessToken(userId:string) {
   // How long will the token be valid for
@@ -27,7 +26,7 @@ function generateAccessToken(userId:string) {
   return token;
 }
 const main = async () => {
-  const token=
+  
   defaults.ssl = {
     rejectUnauthorized: false,
   };
