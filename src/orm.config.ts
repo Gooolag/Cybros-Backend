@@ -3,7 +3,7 @@ import { __prod__ } from "./constants";
 import { User } from "./entities/User";
 
 export default {
-  extities: [User],
+  entities: [User],
   type: "postgres",
   database: "potatoDB",
   url: process.env.DATABASE_URL,
