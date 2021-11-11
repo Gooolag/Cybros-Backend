@@ -22,7 +22,7 @@ const main = async () => {
   keys: ['key1', 'key2']
 }))
 
-const isLoggedIn = (req:any, res:any, next:any) => {
+const isLoggedIn = (req:any, res:any, _next:any) => {
     if (req.user) {
         return req
     } else {
@@ -68,7 +68,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
   app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-      console.log("req==>",req);
+      // console.log("req==>",req);
     res.redirect('/success');
   });
 
