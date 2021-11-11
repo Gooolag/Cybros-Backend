@@ -9,6 +9,7 @@ import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
 import { MyContext } from "./types";
+import cors from "cors";
 require("./passport");
 const cookieSession = require('cookie-session');
 
@@ -19,8 +20,8 @@ const main = async () => {
   };
   const conn = await createConnection(ormConfig);
   conn.runMigrations();
-
   const app = express();
+  app.use(cors({credentials:true}))
   app.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2']
