@@ -67,7 +67,7 @@ const isLoggedIn = (req:any, res:any, _next:any) => {
 
   app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
+  function(_req, res) {
       // console.log("req==>",req);
     res.redirect('/success');
   });
