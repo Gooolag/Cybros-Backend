@@ -2,7 +2,9 @@ import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 
 passport.serializeUser((user, done) => {
+  console.log("serializeUser", user);
   done(null, user);
+
 });
 
 passport.deserializeUser((user: any, done) => {
