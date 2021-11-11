@@ -10,9 +10,24 @@ import passport from "passport";
 import { MyContext } from "./types";
 import cors from "cors";
 require("./passport");
+const jwt = require('jsonwebtoken');
+const config = require('./config');
 const cookieSession = require("cookie-session");
+function generateAccessToken(userId:string) {
+  // How long will the token be valid for
+  const expiresIn = '1 hour';
+  // Which service issued the token
+  const secret = "jesus";
 
+  const token = jwt.sign({}, secret, {
+    expiresIn: expiresIn,
+    subject: userId.toString()
+  });
+
+  return token;
+}
 const main = async () => {
+  const token=
   defaults.ssl = {
     rejectUnauthorized: false,
   };
@@ -85,9 +100,21 @@ const main = async () => {
   app.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),
-    function (_req, res) {
+    function (req, res) {
       // console.log("req==>",req);
-      res.redirect("/success");
+      const jwt=generateAccessToken(req.user.id);
+       const htmlWithEmbeddedJWT = `
+    <html>
+      <script>
+        // Save JWT to localStorage
+        window.localStorage.setItem('JWT', '${jwt}');
+        // Redirect browser to root of application
+        window.location.href = '/';
+      </script>
+    </html>
+    `;
+
+    res.send(htmlWithEmbeddedJWT);
     }
   );
 
