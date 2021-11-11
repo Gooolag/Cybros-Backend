@@ -19,6 +19,7 @@ export class UserResolver {
     async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
         console.log("inside me query !!");
       if (!req.user) {
+        console.log("inside undefines")
         return undefined;
       }
       console.log(req.user.id);
