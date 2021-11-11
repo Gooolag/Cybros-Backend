@@ -8,12 +8,10 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
+import cors from "cors";
 require("./passport");
 const cookieSession = require('cookie-session');
 
-
-  return token;
-}
 const main = async () => {
   
   defaults.ssl = {
@@ -80,7 +78,7 @@ const main = async () => {
 
   app.get("/me", isLoggedIn, (req,res) => {
     if (req.user)
-      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
+      res.send(req.user.id);
     else
       res.send("pp");
   })
