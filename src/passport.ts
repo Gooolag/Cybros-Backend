@@ -2,20 +2,22 @@ import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 import { User } from "./entities/User";
 
-passport.serializeUser((user, done) => {
-  console.log("profile", user);
-  done(null, user);
+passport.serializeUser((profile, done) => {
+  console.log("profile", profile);
+  done(null, profile);
 
 });
 
-passport.deserializeUser(async (id: any, done) => {
-  const res=await User.findOne({id:id});
+passport.deserializeUser(async (profile: any, done) => {
+  const res=await User.findOne({id:profile.sub});
   if(res==undefined){
     console.log("did not find user");
-    const userCreated=await User.create({id:id,first_name:"res",last_name:"res"}).save();
+    const userCreated=await User.create({id:profile.sub,first_name:profile.given_name,last_name:profile.family_name,email:profile.email,picture:profile.picture}).save();
     return done(null,userCreated);
+    // return done(null,null);
   }
-  console.log("found user ")
+  console.log(`found user${profile.first_name}`)
+  
   return done(null, res);
 });
 
@@ -44,7 +46,7 @@ passport.use(
       profile;
       done;
       // const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
-      return done(null,profile);
+      return done(null,profile._json);
     }
   )
 );
