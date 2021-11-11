@@ -30,6 +30,7 @@ passport.use(
       clientSecret: "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",
       callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
       passReqToCallback: true,
+      proxy:true
     },
     function (
       request: any,
