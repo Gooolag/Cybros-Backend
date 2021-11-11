@@ -1,4 +1,4 @@
-import { User } from './entities/User';
+
 import { createConnection } from "typeorm";
 import express from "express";
 import ormConfig from "./orm.config";
@@ -11,11 +11,6 @@ import passport from "passport";
 require("./passport");
 const cookieSession = require('cookie-session');
 
-declare module "express-session" {
-  export interface SessionData {
-    id:string;
-  }
-}
 
 const main = async () => {
   defaults.ssl = {
@@ -26,17 +21,17 @@ const main = async () => {
 
   const app = express();
   app.use(cookieSession({
-  name: 'google-auth-session',
-  keys: ['key1', 'key2']
-}))
+    name: 'google-auth-session',
+    keys: ['key1', 'key2']
+  }))
 
-const isLoggedIn = (req:any, res:any, next:any) => {
+  const isLoggedIn = (req: any, res: any, next: any) => {
     if (req.user) {
-        next();
+      next();
     } else {
-        res.send("not logged in ");
+      res.send("not logged in ");
     }
-}
+  }
 
 
   const apolloServer = new ApolloServer({
@@ -73,16 +68,19 @@ const isLoggedIn = (req:any, res:any, next:any) => {
     res.send("succeded");
   });
 
-  app.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(_req, res) {
+  app.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function (_req, res) {
       // console.log("req==>",req);
-    res.redirect('/success');
-  });
+      res.redirect('/success');
+    });
 
-app.get("/me",isLoggedIn, (req, res) => {
-    res.send(req.session.id)
-})
+  app.get("/me", isLoggedIn, (req,res) => {
+    if (req.user)
+      res.send(req.user.id);
+    else
+      res.send("pp");
+  })
 };
 
 main().catch((err) => {
