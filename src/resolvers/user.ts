@@ -6,4 +6,4 @@ export class UserResolver {
     async hello() {
         return "Hello World!";
     }
-    }
+}
