@@ -19,8 +19,6 @@ declare module "express-session" {
   }
 }
 
-  return token;
-}
 const main = async () => {
   
   defaults.ssl = {
