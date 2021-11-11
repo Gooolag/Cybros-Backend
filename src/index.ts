@@ -9,6 +9,7 @@ import { defaults } from "pg";
 import passport from "passport";
 import { MyContext } from "./types";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import cors from "cors";
 require("./passport");
 const cookieSession = require('cookie-session');
 
@@ -38,6 +39,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
         res.send("not logged in ");
     }
 }
+app.use(cors({origin:"https://cybros-backend.herokuapp.com",credentials:true}));
 
 
   const apolloServer = new ApolloServer({
@@ -50,7 +52,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
     introspection: true,
   });
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app ,cors:false});
 
   app.listen(process.env.PORT || 4000, () => {
     console.log("yep");
