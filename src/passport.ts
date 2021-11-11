@@ -46,7 +46,7 @@ passport.use(
       profile;
       done;
       // const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
-      return done(null,profile);
+      return done(null,profile._json);
     }
   )
 );
