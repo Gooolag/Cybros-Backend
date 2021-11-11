@@ -23,4 +23,10 @@ export class User extends BaseEntity {
     @Column()
     picture: string;
 
+    @Field({nullable: true})
+    @Column({nullable: true})
+    cf_username: string;
+
+
+
 }

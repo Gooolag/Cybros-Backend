@@ -24,7 +24,7 @@ const main = async () => {
 
 const isLoggedIn = (req:any, res:any, next:any) => {
     if (req.user) {
-        next();
+        return req
     } else {
         res.sendStatus(401);
     }
@@ -73,7 +73,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
   });
 
 app.get("/me",isLoggedIn, (req, res) => {
-    res.send(`Welcome ${req}`)
+    res.send(`Welcome ${req.sessionID}`)
 })
 };
 
