@@ -20,7 +20,7 @@ function generateAccessToken(userId:string) {
 
   const token = jwt.sign({}, secret, {
     expiresIn: expiresIn,
-    subject: userId.toString()
+    subject: userId
   });
 
   return token;
