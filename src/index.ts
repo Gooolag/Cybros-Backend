@@ -1,3 +1,4 @@
+import { User } from './entities/User';
 import { createConnection } from "typeorm";
 import express from "express";
 import ormConfig from "./orm.config";
@@ -9,6 +10,13 @@ import { defaults } from "pg";
 import passport from "passport";
 require("./passport");
 const cookieSession = require('cookie-session');
+
+declare module "express-session" {
+  export interface SessionData {
+    id:string;
+  }
+}
+
 const main = async () => {
   defaults.ssl = {
     rejectUnauthorized: false,
@@ -73,7 +81,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
   });
 
 app.get("/me",isLoggedIn, (req, res) => {
-    res.send(req.user.first_name)
+    res.send(req.session.id)
 })
 };
 
