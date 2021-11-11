@@ -73,7 +73,7 @@ const isLoggedIn = (req:any, res:any, next:any) => {
   });
 
 app.get("/me",isLoggedIn, (req, res) => {
-    res.send(`Welcome ${req.sessionID}`)
+    res.send(req.user)
 })
 };
 
