@@ -12,10 +12,10 @@ passport.deserializeUser(async (id: any, done) => {
   const res=await User.findOne({id:id});
   if(res==undefined){
     console.log("did not find user");
-    done(null,null);
+    return done(null,null);
   }
   console.log("found user ")
-  done(null, res);
+  return done(null, res);
 });
 
 var GoogleStrategy = Strategy;
