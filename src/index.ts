@@ -1,3 +1,4 @@
+import { User } from './entities/User';
 import { createConnection } from "typeorm";
 import express from "express";
 import ormConfig from "./orm.config";
@@ -10,18 +11,13 @@ import passport from "passport";
 import { MyContext } from "./types";
 import cors from "cors";
 require("./passport");
-const jwt = require('jsonwebtoken');
-const cookieSession = require("cookie-session");
-function generateAccessToken(userId:string) {
-  // How long will the token be valid for
-  const expiresIn = '1 hour';
-  // Which service issued the token
-  const secret = "jesus";
-  console.log(userId);
-  const token = jwt.sign({}, secret, {
-    expiresIn: expiresIn,
-    subject: "sjkhsjk"
-  });
+const cookieSession = require('cookie-session');
+
+declare module "express-session" {
+  export interface SessionData {
+    id:string;
+  }
+}
 
   return token;
 }
@@ -33,33 +29,19 @@ const main = async () => {
   const conn = await createConnection(ormConfig);
   conn.runMigrations();
   const app = express();
-  app.use(cors({ credentials: true }));
-  app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
-    next(); // dont forget this
-  });
-  app.use(
-    cookieSession({
-      name: "google-auth-session",
-      keys: ["key1", "key2"],
-    })
-  );
+  app.use(cookieSession({
+  name: 'google-auth-session',
+  keys: ['key1', 'key2']
+}))
 
-  const isLoggedIn = (req: any, res: any, next: any) => {
+const isLoggedIn = (req:any, res:any, next:any) => {
     if (req.user) {
-      next();
+        next();
     } else {
-      res.send("not logged in ");
+        res.send("not logged in ");
     }
-  };
+}
+
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -96,32 +78,16 @@ const main = async () => {
     res.send("succeded");
   });
 
-  app.get(
-    "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
-    function (req, res) {
+  app.get('/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(_req, res) {
       // console.log("req==>",req);
-      const jwt=generateAccessToken(req.user.id);
-       const htmlWithEmbeddedJWT = `
-    <html>
-      <script>
-        // Save JWT to localStorage
-        window.localStorage.setItem('JWT', '${jwt}');
-        // Redirect browser to root of application
-        window.location.href = '/';
-      </script>
-    </html>
-    `;
-
-    res.send(htmlWithEmbeddedJWT);
-    }
-  );
-
-  app.get("/me", isLoggedIn, (req, res) => {
-    if (req.user)
-      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
-    else res.send("pp");
+    res.redirect('/success');
   });
+
+app.get("/me",isLoggedIn, (req, res) => {
+    res.send(req.session.id)
+})
 };
 
 main().catch((err) => {
