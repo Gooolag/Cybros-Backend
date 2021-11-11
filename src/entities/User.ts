@@ -5,7 +5,7 @@ import { BaseEntity, Column, Entity } from "typeorm";
 export class User extends BaseEntity {
     @Field()
     @Column({primary:true})
-    id: number;
+    id: string;
 
     @Field()
     @Column()
