@@ -22,7 +22,7 @@ passport.use(
       callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
       passReqToCallback: true,
     },
-    function (
+    async function (
       request: any,
       accessToken: any,
       refreshToken: any,
@@ -36,7 +36,7 @@ passport.use(
       refreshToken;
       profile;
       done;
-      const res=User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
+      const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
       return done(null,res);
     }
   )
