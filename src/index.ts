@@ -77,7 +77,7 @@ const main = async () => {
 
   app.get("/me", isLoggedIn, (req,res) => {
     if (req.user)
-      res.send(req.user.id);
+      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
     else
       res.send("pp");
   })
