@@ -17,7 +17,7 @@ export class UserResolver {
     
     @Query(() => User, { nullable: true })
     async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
-        console.log("inside me query !!");
+        console.log("inside me query !!",req.user);
       if (!req.user) {
         console.log("inside undefines")
         return undefined;
