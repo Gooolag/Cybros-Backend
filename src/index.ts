@@ -85,9 +85,12 @@ const isLoggedIn = (req:any, res:any, next:any) => {
     res.redirect('/success');
   });
 
-app.get("/me",isLoggedIn, (req, res) => {
-    res.send(req.session.id)
-})
+  app.get("/me", isLoggedIn, (req,res) => {
+    if (req.user)
+      res.send(req.user.id);
+    else
+      res.send("pp");
+  })
 };
 
 main().catch((err) => {
