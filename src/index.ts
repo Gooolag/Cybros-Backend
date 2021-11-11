@@ -1,4 +1,3 @@
-import { User } from './entities/User';
 import { createConnection } from "typeorm";
 import express from "express";
 import ormConfig from "./orm.config";
