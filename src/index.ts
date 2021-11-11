@@ -99,7 +99,7 @@ if ('OPTIONS' == req.method) {
        user: req.user //if you have user here
        }, 'secret');
     res.cookie("token", token, {httpOnly:false})
-    res.redirect('/sucess');
+    res.redirect('/success');
   });
 
   app.get("/me", isLoggedIn, (req,res) => {
