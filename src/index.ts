@@ -34,7 +34,7 @@ const main = async () => {
   conn.runMigrations();
   const app = express();
   app.use(cors({ credentials: true }));
-  app.use((_, res, next) => {
+  app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Methods",
