@@ -7,6 +7,8 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
+import { MyContext } from "./types";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 require("./passport");
 const cookieSession = require('cookie-session');
 
@@ -43,6 +45,8 @@ const isLoggedIn = (req:any, res:any, next:any) => {
       resolvers: [UserResolver],
       validate: false,
     }),
+    plugins:[ApolloServerPluginLandingPageGraphQLPlayground({})],
+    context: ({ req, res }): MyContext => ({ req, res }),
     introspection: true,
   });
   await apolloServer.start();
