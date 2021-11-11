@@ -7,6 +7,7 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { defaults } from "pg";
 import passport from "passport";
+import { nextTick } from "process";
 require("./passport");
 const cookieSession = require('cookie-session');
 const main = async () => {
@@ -22,9 +23,9 @@ const main = async () => {
   keys: ['key1', 'key2']
 }))
 
-const isLoggedIn = (req:any, res:any, _next:any) => {
+const isLoggedIn = (req:any, res:any, next:any) => {
     if (req.user) {
-        return req
+        next();
     } else {
         res.send("not logged in ");
     }
