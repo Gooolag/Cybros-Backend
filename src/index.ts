@@ -12,7 +12,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 import cors from "cors";
 require("./passport");
 const cookieSession = require('cookie-session');
-
+var jwt = require('jsonwebtoken');
 declare module "express-session" {
   export interface SessionData {
     id:string;
@@ -92,9 +92,14 @@ if ('OPTIONS' == req.method) {
 
   app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(_req, res) {
+  function(req, res) {
       // console.log("req==>",req);
-    res.redirect('/success');
+     let token = jwt.sign({
+       exp: Math.floor(Date.now() / 1000) + (60 * 60),
+       user: req.user //if you have user here
+       }, 'secret');
+    res.cookie("token", token, {httpOnly:false})
+    res.redirect('/sucess');
   });
 
   app.get("/me", isLoggedIn, (req,res) => {
