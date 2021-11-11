@@ -1,9 +1,8 @@
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
-import { User } from "./entities/User";
 
 passport.serializeUser((user, done) => {
-  console.log("serializeUser", user);
+  console.log("profile", user);
   done(null, user);
 
 });
@@ -22,7 +21,7 @@ passport.use(
       callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
       passReqToCallback: true,
     },
-    async function (
+    function (
       request: any,
       accessToken: any,
       refreshToken: any,
@@ -36,8 +35,8 @@ passport.use(
       refreshToken;
       profile;
       done;
-      const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
-      return done(null,res);
+      // const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
+      return done(null,profile);
     }
   )
 );
