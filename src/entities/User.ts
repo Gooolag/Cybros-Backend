@@ -5,7 +5,7 @@ import { BaseEntity, Column, Entity } from "typeorm";
 export class User extends BaseEntity {
     @Field()
     @Column({primary:true})
-    roll_num: string;
+    id: string;
 
     @Field()
     @Column()
@@ -14,11 +14,19 @@ export class User extends BaseEntity {
     @Field()
     @Column()
     last_name: string;
+    
+    @Field()
+    @Column()
+    email: string;
 
     @Field()
     @Column()
-    username: string;
+    picture: string;
 
-    @Column()
-    password: string;
+    @Field({nullable: true})
+    @Column({nullable: true})
+    cf_username: string;
+
+
+
 }

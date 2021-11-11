@@ -1,56 +1,92 @@
-import { createConnection } from "typeorm"
-import express from 'express'
-import ormConfig from "./orm.config"
-import { ApolloServer } from "apollo-server-express"
-import { buildSchema } from "type-graphql"
-import { UserResolver } from "./resolvers/user"
-import session from "express-session"
-// import passport from "passport"
-const passport = require('passport');
-require('./passport');
-const main = async () => {
-    const conn = await createConnection(ormConfig)
-    conn.runMigrations()
-    const app = express()
-    const apolloServer = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [UserResolver],
-            validate: false,
-        })
-    })
-    await apolloServer.start()
-    apolloServer.applyMiddleware({ app })
-    app.listen(3000, () => {
-        console.log("server is running on port 4000")
-    })
-    app.use(session({secret:"lol",resave: false,
-      saveUninitialized: false,}))
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.get('/google',
-    passport.authenticate('google', {
-            scope:
-                ['email', 'profile']
-        }
-    ));
+import { createConnection } from "typeorm";
+import express from "express";
+import ormConfig from "./orm.config";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { UserResolver } from "./resolvers/user";
+import session from "express-session";
+import { defaults } from "pg";
+import passport from "passport";
+require("./passport");
+const cookieSession = require('cookie-session');
 
-    app.get("/failed", (req, res) => {
-    res.send("Failed")
-})
-app.get("/success", (req, res) => {
-    res.send(`Welcome ${req.user.email}`)
-})
-
-
-    app.get('/auth/google/callback',
-    passport.authenticate('google', {
-        failureRedirect: '/failed',
-        
-    }),
-    function (req, res) {
-        console.log("works ?")
-        res.redirect('https://google.com')
-
-    })
+declare module "express-session" {
+  export interface SessionData {
+    id:string;
+  }
 }
-main()
+
+const main = async () => {
+  
+  defaults.ssl = {
+    rejectUnauthorized: false,
+  };
+  const conn = await createConnection(ormConfig);
+  conn.runMigrations();
+  const app = express();
+  app.use(cookieSession({
+  name: 'google-auth-session',
+  keys: ['key1', 'key2']
+}))
+
+const isLoggedIn = (req:any, res:any, next:any) => {
+    if (req.user) {
+        next();
+    } else {
+        res.send("not logged in ");
+    }
+}
+
+
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+      validate: false,
+    }),
+    introspection: true,
+  });
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(process.env.PORT || 4000, () => {
+    console.log("yep");
+  });
+
+  app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.get(
+    "/google",
+    passport.authenticate("google", {
+      scope: ["email", "profile"],
+    })
+  );
+
+  app.get("/failed", (_, res) => {
+    res.send("Failed");
+  });
+
+  app.get("/success", (_, res) => {
+    res.send("succeded");
+  });
+
+  app.get('/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(_req, res) {
+      // console.log("req==>",req);
+    res.redirect('/success');
+  });
+
+  app.get("/me", isLoggedIn, (req,res) => {
+    if (req.user)
+      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
+    else
+      res.send("pp");
+  })
+};
+
+main().catch((err) => {
+  console.log(err);
+});

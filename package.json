@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-     "watch": "tsc -w",
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "watch": "tsc -w",
     "dev": "nodemon dist/index.js"
   },
   "author": "ananjan",
@@ -17,12 +18,15 @@
     "@types/passport": "^1.0.7",
     "@types/passport-google-oauth": "^1.0.42",
     "@types/passport-google-oauth2": "^0.1.4",
+    "@types/passport-google-oauth20": "^2.0.11",
+    "@types/pg": "^8.6.1",
     "nodemon": "^2.0.14",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"
   },
   "dependencies": {
     "apollo-server-express": "^3.4.0",
+    "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -31,6 +35,7 @@
     "passport": "^0.5.0",
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth2": "^0.2.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-google-token": "^0.1.2",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
