@@ -12,7 +12,8 @@ passport.deserializeUser(async (id: any, done) => {
   const res=await User.findOne({id:id});
   if(res==undefined){
     console.log("did not find user");
-    return done(null,null);
+    const userCreated=await User.create({id:id,first_name:"res",last_name:"res"});
+    return done(null,userCreated);
   }
   console.log("found user ")
   return done(null, res);
