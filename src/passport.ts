@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
+import { User } from "./entities/User";
 
 passport.serializeUser((user, done) => {
   console.log("serializeUser", user);
@@ -35,7 +36,8 @@ passport.use(
       refreshToken;
       profile;
       done;
-      return done(null,"srs")
+      const res=User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
+      return done(null,res);
     }
   )
 );
