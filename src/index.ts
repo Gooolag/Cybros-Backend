@@ -94,7 +94,7 @@ const main = async () => {
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),
     (req, res) => {
-      res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+      res.setHeader("Access-Control-Allow-Origin", "https://potato-hyperlearner.herokuapp.com");
       res.cookie("userID", req.session.userID, {
         maxAge: 9000000000,
         httpOnly: true,
@@ -102,6 +102,7 @@ const main = async () => {
       });
       res.append("Set-Cookie", "userID=" + req.session.userID + ";");
       res.send("yep");
+      res.redirect("https://potato-hyperlearner.herokuapp.com");
     }
   );
 
