@@ -4,26 +4,25 @@ import { MyContext } from "../types";
 
 @Resolver()
 export class UserResolver {
-    @Query(() => String)
-    async hello() {
-        return "Hello World!";
-    }
+  @Query(() => String)
+  async hello() {
+    return "Hello World!";
+  }
 
-    @Query(()=>[User])
-    async getAllUsers():Promise<User []>{
-      console.log(User.find());
-      return User.find();
-    }
-    
-    @Query(() => User, { nullable: true })
-    async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
-        console.log("inside me query !!",req.session);
-      if (!req.session) {
-        console.log("inside undefines")
-        return undefined;
-      }
-      console.log(req.session);
-      return User.findOne({ id: "re" });
-    }
+  @Query(() => [User])
+  async getAllUsers(): Promise<User[]> {
+    console.log(User.find());
+    return User.find();
+  }
 
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
+    console.log("inside me query !!");
+    if (!req.session) {
+      console.log("inside undefines");
+      return undefined;
+    }
+    const user = await User.findOne({ id: "re" });
+    return user;
+  }
 }
