@@ -18,6 +18,7 @@ const config = {
   baseURL: "https://cybros-backend.herokuapp.com",
   clientID: "PAKI1xfasSuwPDbJYzRqQUFjadfBsFgm",
   issuerBaseURL: "https://dev-eee3ntvm.us.auth0.com",
+
 };
 
 const main = async () => {
@@ -51,7 +52,7 @@ const main = async () => {
     console.log("yep");
   });
 
-  app.get("/success", (req, res) => {
+  app.get("/callback", (req, res) => {
     const info = req.oidc.user;
     if (!info) {
       res.send(401);
