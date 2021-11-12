@@ -93,8 +93,9 @@ const main = async () => {
   app.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),
-    (_, res) => {
-      res.redirect("/success");
+    (req, res) => {
+      res.cookie("userID", req.session.userID);
+      res.redirect("https://potato.herokuapp.com/");
     }
   );
 
