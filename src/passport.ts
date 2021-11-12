@@ -20,10 +20,9 @@ passport.deserializeUser(async (profile: any, done) => {
       picture: profile.picture,
     }).save();
     return done(null, userCreated);
-    // return done(null,null);
   }
-  console.log(`found user${profile.first_name}`);
 
+  console.log(`found user ${profile.first_name}`);
   return done(null, res);
 });
 
@@ -37,13 +36,13 @@ passport.use(
       callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
       passReqToCallback: true,
     },
-    function (
+    (
       request: Request,
       accessToken: string,
       refreshToken: string,
       profile: any,
       done: Function
-    ) {
+    ) => {
       console.log("hje", accessToken), refreshToken;
       request.session.userID = profile.id;
       return done(null, profile._json);

@@ -3,30 +3,27 @@ import { BaseEntity, Column, Entity } from "typeorm";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-    @Field()
-    @Column({primary:true})
-    id: string;
+  @Field()
+  @Column({ primary: true })
+  id: string;
 
-    @Field()
-    @Column()
-    first_name: string;
+  @Field()
+  @Column()
+  first_name: string;
 
-    @Field()
-    @Column()
-    last_name: string;
-    
-    @Field()
-    @Column()
-    email: string;
+  @Field()
+  @Column()
+  last_name: string;
 
-    @Field()
-    @Column()
-    picture: string;
+  @Field()
+  @Column()
+  email: string;
 
-    @Field({nullable: true})
-    @Column({nullable: true})
-    cf_username: string;
+  @Field()
+  @Column()
+  picture: string;
 
-
-
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  cf_username: string;
 }
