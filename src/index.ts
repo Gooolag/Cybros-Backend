@@ -54,11 +54,13 @@ const main = async () => {
   app.post("/callback", async (req, res) => {
     const info = req.oidc.user;
     if (!info) {
+      console.log("nope");
       res.send(401);
       return;
     }
     const user = await User.findOne({ id: info.sub });
     if (!user) {
+      console.log("registering");
       await User.create({
         id: info.sub,
         email: info.email,
