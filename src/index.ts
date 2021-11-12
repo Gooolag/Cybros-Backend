@@ -52,7 +52,7 @@ const main = async () => {
     console.log("yep");
   });
 
-  app.get("/callback", (req, res) => {
+  app.post("/callback", (req, res) => {
     const info = req.oidc.user;
     if (!info) {
       res.send(401);
