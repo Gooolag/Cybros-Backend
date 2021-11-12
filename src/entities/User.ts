@@ -29,8 +29,4 @@ export class User extends BaseEntity {
     @Field()
     @Column({nullable: true})
     cf_username: string;
-
-    @Column({default: 0})
-    tokenVersion: number;
-
 }

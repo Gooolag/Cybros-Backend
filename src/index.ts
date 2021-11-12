@@ -32,17 +32,14 @@ const main = async () => {
     try{
       payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
     }catch{
-      return res.send({ ok: false, accessToken:''})
+      return res.send({ ok1: false, accessToken:''})
     }
     // IF THE TOKEN IS VALID WE RETURN BACK AN ACCESS TOKEN 
     const user = await User.findOne({id : payload.userId})
     if(!user){
-      return res.send({ ok: false, accessToken: ''})
+      return res.send({ ok2: false, accessToken: ''})
     }
-    //CHECKING THE TOKEN VERSION
-    if(user.tokenVersion!== payload.tokenVersion){
-      return res.send({ ok: false, accessToken: ''})
-    }
+
     //refreash the refreash token 
     sendRefreashToken(res,createAccessToken(user));
     
