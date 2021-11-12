@@ -18,11 +18,11 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
     console.log("inside me query !!");
-    if (!req.user) {
+    if (!req.passport.user) {
       console.log("inside undefines");
       return undefined;
     }
-    const user = await User.findOne({ id: req.user.id });
+    const user = await User.findOne({ id: req.passport.user.id });
     return user;
   }
 }
