@@ -69,6 +69,7 @@ const main = async () => {
         picture: info.picture,
       }).save();
     }
+    console.log("done");
     res.send("succeded");
   });
 };
