@@ -55,8 +55,7 @@ const main = async () => {
     const info = req.oidc.user;
     if (!info) {
       console.log("nope");
-      res.send(401);
-      return "failed";
+      return res.send(401);
     }
     const user = await User.findOne({ id: info.sub });
     if (!user) {
@@ -70,8 +69,7 @@ const main = async () => {
       }).save();
     }
     console.log("done");
-    res.send("succeded");
-    return "done";
+    return res.send("succeded");
   });
 };
 
