@@ -22,6 +22,7 @@ export class UserResolver {
       console.log("undef");
       return undefined;
     }
+    console.log(req.oidc.user);
     const user = await User.findOne({ id: "0" });
     return user;
   }
