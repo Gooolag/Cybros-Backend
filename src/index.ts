@@ -95,7 +95,7 @@ const main = async () => {
     passport.authenticate("google", { failureRedirect: "/login" }),
     (req, res) => {
       res.cookie("userID", req.session.userID);
-      res.redirect("https://potato.herokuapp.com/");
+      res.redirect("https://potato-hyperlearner.herokuapp.com/");
     }
   );
 
