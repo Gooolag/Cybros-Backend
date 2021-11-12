@@ -99,6 +99,7 @@ const main = async () => {
         maxAge: 9000000000,
         httpOnly: true,
         secure: true,
+        sameSite: "none",
       });
       res.append("Set-Cookie", "userID=" + req.session.userID + ";");
       res.send("yep");
