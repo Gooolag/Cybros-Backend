@@ -18,7 +18,6 @@ const config = {
   baseURL: "https://cybros-backend.herokuapp.com",
   clientID: "PAKI1xfasSuwPDbJYzRqQUFjadfBsFgm",
   issuerBaseURL: "https://dev-eee3ntvm.us.auth0.com",
-
 };
 
 const main = async () => {
@@ -52,20 +51,24 @@ const main = async () => {
     console.log("yep");
   });
 
-  app.post("/callback", (req, res) => {
+  app.post("/callback", async (req, res) => {
     const info = req.oidc.user;
     if (!info) {
       res.send(401);
       return;
     }
-    User.create({
-      id: info.sub,
-      email: info.email,
-      first_name: info.given_name,
-      last_name: info.family_name,
-      picture: info.picture,
-    }).save();
+    const user = await User.findOne({ id: info.sub });
+    if (!user) {
+      await User.create({
+        id: info.sub,
+        email: info.email,
+        first_name: info.given_name,
+        last_name: info.family_name,
+        picture: info.picture,
+      }).save();
+    }
     res.send("succeded");
+    return null;
   });
 };
 
