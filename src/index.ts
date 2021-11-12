@@ -56,7 +56,7 @@ const main = async () => {
     if (!info) {
       console.log("nope");
       res.send(401);
-      return;
+      return "failed";
     }
     const user = await User.findOne({ id: info.sub });
     if (!user) {
@@ -71,6 +71,7 @@ const main = async () => {
     }
     console.log("done");
     res.send("succeded");
+    return "done";
   });
 };
 
