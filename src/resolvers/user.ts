@@ -20,8 +20,6 @@ class UserDetails {
   email: string;
   @Field()
   password: string;
-  @Field()
-  cf_username: string;
 }
 @InputType()
 class loginDetails {
@@ -43,7 +41,7 @@ export class UserResolver {
     bye(
       @Ctx() {payload}:MyContext
     ) {
-        return `Bye saar ${payload!.userId}`;
+        return payload!.userId;
     }
 
     @Query(()=>[User])

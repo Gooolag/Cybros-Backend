@@ -11,12 +11,3 @@ export default {
   logging: !__prod__,
   synchronize: true,
 } as Parameters<typeof createConnection>[0];
-
-// export default {
-//   entities: [Course,Student,StudentCourse,FlashCard],
-//   type: "postgres",
-//   database: "potatoDB",
-//   password: "2002",
-//   logging: !__prod__,
-//   synchronize: true,
-// } as Parameters<typeof createConnection>[0];
