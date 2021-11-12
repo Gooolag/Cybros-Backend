@@ -1,4 +1,4 @@
-import { createAccessToken} from './auth';
+import { createAccessToken, createRefreashToken} from './auth';
 import { ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core";
 import 'dotenv/config';
 import { createConnection } from "typeorm";
@@ -41,7 +41,7 @@ const main = async () => {
     }
 
     //refreash the refreash token 
-    sendRefreashToken(res,createAccessToken(user));
+    sendRefreashToken(res,createRefreashToken(user));
     
     //retuning a brand new assess token
     return res.send({ ok: false, accessToken: createAccessToken(user)})

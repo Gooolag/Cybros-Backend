@@ -1,5 +1,5 @@
 import { AuthMiddleware } from '../AuthMiddleware';
-import { createAccessToken, createRefreashToken} from './../auth';
+import { createAccessToken, createRefreashToken } from './../auth';
 import { MyContext } from './../MyContext';
 import { User } from "../entities/User";
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver, UseMiddleware } from "type-graphql";
@@ -70,9 +70,9 @@ export class UserResolver {
       }
       else{
         if(user.password==details.password){
-          // successfully logged in 
+          // successfullt logged in 
           //so we give them an access token
-          sendRefreashToken(res, createRefreashToken(user));
+          sendRefreashToken(res,createRefreashToken(user));
 
           return {
             accessToken:createAccessToken(user),
