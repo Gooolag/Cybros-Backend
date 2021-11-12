@@ -15,7 +15,7 @@ const cookieSession = require('cookie-session');
 
 declare module "express-session" {
   export interface SessionData {
-    id:string;
+    userID: string;
   }
 }
 
