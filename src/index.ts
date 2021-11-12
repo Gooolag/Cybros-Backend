@@ -25,7 +25,7 @@ const main = async () => {
   };
   const conn = await createConnection(ormConfig);
   conn.runMigrations();
-  
+
   const app = express();
 
   app.use(
@@ -94,8 +94,14 @@ const main = async () => {
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),
     (req, res) => {
-      res.cookie("userID", req.session.userID);
-      res.redirect("https://potato-hyperlearner.herokuapp.com/");
+      res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+      res.cookie("userID", req.session.userID, {
+        maxAge: 9000000000,
+        httpOnly: true,
+        secure: true,
+      });
+      res.append("Set-Cookie", "userID=" + req.session.userID + ";");
+      res.send("yep");
     }
   );
 
