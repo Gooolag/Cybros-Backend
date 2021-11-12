@@ -1,49 +1,64 @@
+import { createAccessToken} from './auth';
+import { ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core";
+import 'dotenv/config';
 import { createConnection } from "typeorm";
 import express from "express";
 import ormConfig from "./orm.config";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user";
-import session from "express-session";
-import { defaults } from "pg";
-import passport from "passport";
-require("./passport");
-const cookieSession = require('cookie-session');
-
-declare module "express-session" {
-  export interface SessionData {
-    id:string;
-  }
-}
+import cookieParser from "cookie-parser";
+import { verify } from "jsonwebtoken";
+import { User } from "./entities/User";
+import { sendRefreashToken } from './sendRefreashToken';
 
 const main = async () => {
   
-  defaults.ssl = {
-    rejectUnauthorized: false,
-  };
   const conn = await createConnection(ormConfig);
   conn.runMigrations();
   const app = express();
-  app.use(cookieSession({
-  name: 'google-auth-session',
-  keys: ['key1', 'key2']
-}))
 
-const isLoggedIn = (req:any, res:any, next:any) => {
-    if (req.user) {
-        next();
-    } else {
-        res.send("not logged in ");
+  app.use(cookieParser());
+  app.get("/", (_req,res) => res.send("hello"));
+
+  //cookie only works in this route
+  app.post("/refreash_token", async (req,res,_next) =>{
+    
+    const token = req.cookies.plsworkoriwillkillmyself;
+    if(!token){
+      return res.send({ ok: false, accessToken: ''})
     }
-}
-
+    let payload: any = null;
+    try{
+      payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
+    }catch{
+      return res.send({ ok: false, accessToken:''})
+    }
+    // IF THE TOKEN IS VALID WE RETURN BACK AN ACCESS TOKEN 
+    const user = await User.findOne({id : payload.userId})
+    if(!user){
+      return res.send({ ok: false, accessToken: ''})
+    }
+    //CHECKING THE TOKEN VERSION
+    if(user.tokenVersion!== payload.tokenVersion){
+      return res.send({ ok: false, accessToken: ''})
+    }
+    //refreash the refreash token 
+    sendRefreashToken(res,createAccessToken(user));
+    
+    //retuning a brand new assess token
+    return res.send({ ok: false, accessToken: createAccessToken(user)})
+  })
 
   const apolloServer = new ApolloServer({
+    
     schema: await buildSchema({
       resolvers: [UserResolver],
       validate: false,
     }),
+      plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
     introspection: true,
+    context: ({ req,res}) => ({req,res})
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
@@ -52,39 +67,6 @@ const isLoggedIn = (req:any, res:any, next:any) => {
     console.log("yep");
   });
 
-  app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
-
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  app.get(
-    "/google",
-    passport.authenticate("google", {
-      scope: ["email", "profile"],
-    })
-  );
-
-  app.get("/failed", (_, res) => {
-    res.send("Failed");
-  });
-
-  app.get("/success", (_, res) => {
-    res.send("succeded");
-  });
-
-  app.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(_req, res) {
-      // console.log("req==>",req);
-    res.redirect('/success');
-  });
-
-  app.get("/me", isLoggedIn, (req,res) => {
-    if (req.user)
-      res.send(`Welcome ${req.user.first_name} ${req.user.last_name}`);
-    else
-      res.send("pp");
-  })
 };
 
 main().catch((err) => {

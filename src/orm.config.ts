@@ -5,12 +5,18 @@ import { User } from "./entities/User";
 export default {
   entities: [User],
   type: "postgres",
-  database: "potatoDB",
-  url: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  username: "postgres",
+  database: "cybruhDB",
+  password:"2002",
   logging: !__prod__,
-  debug: !__prod__,
   synchronize: true,
 } as Parameters<typeof createConnection>[0];
+
+// export default {
+//   entities: [Course,Student,StudentCourse,FlashCard],
+//   type: "postgres",
+//   database: "potatoDB",
+//   password: "2002",
+//   logging: !__prod__,
+//   synchronize: true,
+// } as Parameters<typeof createConnection>[0];
