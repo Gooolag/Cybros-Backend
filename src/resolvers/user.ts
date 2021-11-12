@@ -19,7 +19,7 @@ export class UserResolver {
   async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
     console.log("inside me query !!");
     if (!req.passport) {
-      console.log("inside undefines");
+      console.log("undef", req);
       return undefined;
     }
     const user = await User.findOne({ id: req.passport.user.id });
