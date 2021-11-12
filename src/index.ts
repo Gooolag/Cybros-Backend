@@ -9,6 +9,7 @@ import { MyContext } from "./types";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import cors from "cors";
 import { auth } from "express-openid-connect";
+import { User } from "./entities/User";
 
 const config = {
   authRequired: false,
@@ -50,18 +51,20 @@ const main = async () => {
     console.log("yep");
   });
 
-  app.get("/failed", (_, res) => {
-    res.send("Failed");
-  });
-
-  app.get("/success", (_, res) => {
+  app.get("/success", (req, res) => {
+    const info = req.oidc.user;
+    if (!info) {
+      res.send(401);
+      return;
+    }
+    User.create({
+      id: info.sub,
+      email: info.email,
+      first_name: info.given_name,
+      last_name: info.family_name,
+      picture: info.picture,
+    }).save();
     res.send("succeded");
-  });
-
-  app.get("/me", (req, res) => {
-    if (req.oidc.isAuthenticated())
-      res.send(`Welcome ${req.oidc.user}`);
-    else res.send("Not Logged in");
   });
 };
 
