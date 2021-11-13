@@ -20,6 +20,8 @@ class UserDetails {
   email: string;
   @Field()
   password: string;
+  @Field()
+  picture: string;
 }
 @InputType()
 class loginDetails {
@@ -27,6 +29,11 @@ class loginDetails {
   email: string;
   @Field()
   password : string;
+}
+@InputType()
+class idDetails {
+  @Field()
+  id:number;
 }
 
 @Resolver()
@@ -36,9 +43,9 @@ export class UserResolver {
         return "Hello World!";
     }
 
-    @Query(() => String)
+    @Query(() => Number)
     @UseMiddleware(AuthMiddleware)
-    bye(
+    payload(
       @Ctx() {payload}:MyContext
     ) {
         return payload!.userId;
@@ -47,6 +54,14 @@ export class UserResolver {
     @Query(()=>[User])
     async getAllUsers():Promise<User []>{
         return User.find();
+        
+    }
+    @Query(()=>[User])
+    async getUser(
+      @Arg("details") details:idDetails
+    ):Promise<User | undefined>{
+        const user = await User.findOne({where : {id:details.id}});
+        return user;
         
     }
     @Mutation(() => User, { nullable: true })

@@ -3,6 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
+    @Field()
     @PrimaryGeneratedColumn()
     @Column({primary:true})
     id: number;
