@@ -74,6 +74,7 @@ export class UserResolver {
     ): Promise<LoginResponse> {
       const user = await User.findOne({ where: {id:details.id}})
       console.log(`bokachoda ${user!.id}`);
+      console.log(res);
       if(!user){
         throw new Error('cant find user !');
       }
@@ -81,6 +82,7 @@ export class UserResolver {
           // successfullt logged in 
           // so we give them an access token
           sendRefreashToken(res,createRefreashToken(user));
+
           console.log(user);
           return {
             accessToken:createAccessToken(user),

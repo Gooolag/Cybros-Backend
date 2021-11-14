@@ -33,6 +33,7 @@ const main = async () => {
     }),
   );
   app.use(cookieParser());
+  
   app.get("/", (_req, res) => res.send("hello"));
 
   app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
