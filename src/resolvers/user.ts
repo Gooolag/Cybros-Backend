@@ -23,17 +23,11 @@ class UserDetails {
   @Field()
   picture: string;
 }
-@InputType()
-class loginDetails {
-  @Field()
-  email: string;
-  @Field()
-  password : string;
-}
+
 @InputType()
 class idDetails {
   @Field()
-  id:number;
+  id:string;
 }
 
 @Resolver()
@@ -43,11 +37,12 @@ export class UserResolver {
         return "Hello World!";
     }
 
-    @Query(() => Number)
+    @Query(() => String)
     @UseMiddleware(AuthMiddleware)
     payload(
       @Ctx() {payload}:MyContext
     ) {
+      console.log("ohoh",payload);
         return payload!.userId;
     }
 
@@ -72,12 +67,13 @@ export class UserResolver {
       return course;
     }
 
-    @Query(() => LoginResponse)
+    @Mutation(() => LoginResponse)
     async login(
-      @Ctx(){res,req}:MyContext
+      @Arg("details") details:idDetails,
+      @Ctx(){res}:MyContext
     ): Promise<LoginResponse> {
-      const user = await User.findOne({ where: {id:req.session.userID}})
-      console.log(`bokachoda ${req.session.userID}`);
+      const user = await User.findOne({ where: {id:details.id}})
+      console.log(`bokachoda ${user!.id}`);
       if(!user){
         throw new Error('cant find user !');
       }

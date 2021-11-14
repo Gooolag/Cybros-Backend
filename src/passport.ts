@@ -17,7 +17,7 @@ passport.deserializeUser(async (profile: any, done) => {
     return done(null,userCreated);
     // return done(null,null);
   }
-  console.log(`found user${profile.first_name}`)
+  console.log(`found user${res.first_name}`)
   
   return done(null, res);
 });
@@ -40,8 +40,7 @@ passport.use(
       done: Function
     ) => {
       console.log("hje", accessToken), refreshToken;
-      request.session.userID = profile.id;
-      console.log("ressss",request.session.userID);
+      request;
       return done(null, profile._json);
     }
   )

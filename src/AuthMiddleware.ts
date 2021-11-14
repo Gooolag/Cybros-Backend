@@ -4,8 +4,9 @@ import { MyContext } from "./MyContext"
 // bearer y87265817thv2t24t2t
 export const AuthMiddleware: MiddlewareFn<MyContext> = ({context}, next) => {
   const authorization =context.req.headers['authorization']
+  console.log("hola",authorization)
   if (!authorization){
-    throw new Error("not authorized");
+    throw new Error("not authorized1");
   }
   try{
     const token = authorization?.split(" ")[1];

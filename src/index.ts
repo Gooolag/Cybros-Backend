@@ -17,22 +17,14 @@ import passport from 'passport';
 require("./passport");
 
 import session from 'express-session';
-declare module "express-session" {
-  export interface SessionData {
-    userID: string;
-  }
-}
-const cookieSession = require('cookie-session');
+
 
 const main = async () => {
 
   const conn = await createConnection(ormConfig);
   conn.runMigrations();
   const app = express();
-  app.use(cookieSession({
-    name: 'google-auth-session',
-    keys: ['key1', 'key2']
-  }))
+
   //cors shit
   app.use(
     cors({
@@ -42,12 +34,12 @@ const main = async () => {
   );
   app.use(cookieParser());
   app.get("/", (_req, res) => res.send("hello"));
+
   app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
 
   app.use(passport.initialize());
   app.use(passport.session());
 
-  //cookie only works in this route
   app.get("/success", (_, res) => {
     res.send("succeded");
   });
@@ -60,11 +52,11 @@ const main = async () => {
   );
   app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: 'http://localhost:3000/' }),
-  function(_req, res) {
-      // console.log("req==>",req);
-    res.redirect('http://localhost:3000/login');
+  function(req, res) {
+      console.log("req==>",req);
+    res.redirect(`http://localhost:3000/login/${req.user.sub}`);
   });
-  
+  //cookie only works in this route
   app.post("/refreash_token", async (req, res, _next) => {
 
     const token = req.cookies.plsworkoriwillkillmyself;

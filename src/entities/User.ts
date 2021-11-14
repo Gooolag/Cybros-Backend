@@ -8,11 +8,11 @@ export class User extends BaseEntity {
     id: string;
 
     @Field()
-    @Column({nullable: true})
+    @Column({nullable: true, default: false})
     admin: boolean;
 
     @Field()
-    @Column({default:false})
+    @Column({nullable: true})
     first_name: string;
 
     @Field()
