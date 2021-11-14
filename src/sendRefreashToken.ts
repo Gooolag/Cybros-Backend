@@ -7,4 +7,5 @@ export const sendRefreashToken=(res: Response, token: string)=> {
       httpOnly:true,
     }
   );
+  console.log("yes");
 }

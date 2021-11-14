@@ -33,13 +33,12 @@ const main = async () => {
     }),
   );
   app.use(cookieParser());
-  
   app.get("/", (_req, res) => res.send("hello"));
 
   app.use(session({ secret: "lol", resave: false, saveUninitialized: false }));
 
   app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(passport.session());
 
   app.get("/success", (_, res) => {
     res.send("succeded");
@@ -62,25 +61,25 @@ const main = async () => {
 
     const token = req.cookies.plsworkoriwillkillmyself;
     if (!token) {
-      return res.send({ ok: false, accessToken: '' })
+      return res.send({ ok: false, accessToken: "" })
     }
     let payload: any = null;
     try {
       payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
     } catch {
-      return res.send({ ok1: false, accessToken: '' })
+      return res.send({ ok1: false, accessToken: "" })
     }
     // IF THE TOKEN IS VALID WE RETURN BACK AN ACCESS TOKEN 
     const user = await User.findOne({ id: payload.userId })
     if (!user) {
-      return res.send({ ok2: false, accessToken: '' })
+      return res.send({ ok: false, accessToken: "" })
     }
 
     //refreash the refreash token 
     sendRefreashToken(res, createRefreashToken(user));
 
     //retuning a brand new assess token
-    return res.send({ ok: false, accessToken: createAccessToken(user) })
+    return res.send({ ok: true, accessToken: createAccessToken(user) })
   })
 
   const apolloServer = new ApolloServer({
