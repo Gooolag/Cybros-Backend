@@ -72,28 +72,24 @@ export class UserResolver {
       return course;
     }
 
-    @Mutation(() => LoginResponse)
+    @Query(() => LoginResponse)
     async login(
-      @Arg("details") details: loginDetails,
-      @Ctx(){res}:MyContext
+      @Ctx(){res,req}:MyContext
     ): Promise<LoginResponse> {
-      const user = await User.findOne({where: {email:details.email}})
+      const user = await User.findOne({ where: {id:req.session.userID}})
+      console.log(`bokachoda ${req.session.userID}`);
       if(!user){
         throw new Error('cant find user !');
       }
       else{
-        if(user.password==details.password){
           // successfullt logged in 
-          //so we give them an access token
+          // so we give them an access token
           sendRefreashToken(res,createRefreashToken(user));
-
+          console.log(user);
           return {
             accessToken:createAccessToken(user),
           }
         }
-        else{
-          throw new Error('wrong password !');
-        }
       }
-    }
-  }
+}
+  

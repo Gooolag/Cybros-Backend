@@ -1,4 +1,5 @@
 import passport from "passport";
+import { Request } from "express";
 import { Strategy } from "passport-google-oauth20";
 import { User } from "./entities/User";
 
@@ -28,25 +29,20 @@ passport.use(
       clientID:
         "527085962224-ll9s87m90fon1jl6c4ef6dadp52pcc7m.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "https://cybros-backend.herokuapp.com/google/callback",
+      callbackURL: "http://localhost:4000/google/callback",
       passReqToCallback: true,
     },
-    function (
-      request: any,
-      accessToken: any,
-      refreshToken: any,
+    (
+      request: Request,
+      accessToken: string,
+      refreshToken: string,
       profile: any,
-      done: any
-    ) {
-      console.log("hje");
-      console.log(accessToken);
-      request;
-      accessToken;
-      refreshToken;
-      profile;
-      done;
-      // const res=await User.create({acessToken:accessToken,first_name:"res",last_name:"res"})
-      return done(null,profile._json);
+      done: Function
+    ) => {
+      console.log("hje", accessToken), refreshToken;
+      request.session.userID = profile.id;
+      console.log("ressss",request.session.userID);
+      return done(null, profile._json);
     }
   )
 );
